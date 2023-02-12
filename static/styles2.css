@@ -11,6 +11,7 @@
     --color-white:rgb(216, 213, 213);
     --color-black:rgb(0, 0, 0);
     --color-grey1:rgb(43, 39, 39);
+    -color-grey2:rgb(22, 21, 21);
     --box-shadow: 0 3px 5px rgba(200,200,200,.5), 0 -3px 5px rgba(200,200,200,.5);
     --color-btn:#fff;
     --gradient-dark:90deg , #000 25%, rgb(37, 36, 39) 100%;
@@ -88,6 +89,12 @@ nav {
 
 
 
+.text-contain{
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  padding: 20px 0;
+}
 .card-container {
     padding-top: 15px;
     display: flex;
@@ -119,7 +126,7 @@ nav {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    background-color: blue;
+    background-color: var(--color-secondary);
     color: white;
     border-radius: 50%;
     text-align: center;
@@ -130,4 +137,60 @@ nav {
     justify-content: center;
     align-items: center;
     font-size: 16px;
+  }
+
+.chat-container{
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  background-color: var(--color-grey2);
+  
+}
+
+  .chat{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-grey2);
+  }
+  .chat-box{
+    text-align: center;
+    justify-content: center;
+    border-width:3px;
+    border-radius: 10px;
+    border-style:solid;
+    width: 70%;
+    height: 200px;
+    border-color:var(--color-white);
+    margin-bottom: 20px;
+    background-color: var(--color-grey2);
+  }
+  
+#chat{
+  width: 75%;
+}
+
+  .form-signin {
+    text-align: center;
+  }
+  
+  h1.h2 {
+    margin-top: 10px;
+  }
+  
+  input[type="text"] {
+    height: 20px;
+    font-size: 18px;
+    width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  button.btn {
+    margin: 10px 0;
+    padding: 5px 10px;
+    border-radius: 7px;
+    background-color: var(--color-secondary);
+    color: white;
   }
