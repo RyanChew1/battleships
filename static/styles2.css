@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color-primary:rgb(37, 36, 49);
+    --color-secondary: rgb(23, 97, 255);
+    --color-alt: rgb(226, 209, 209);
+    --color-nav: rgb(23, 23, 31);
+    --color-white:rgb(216, 213, 213);
+    --color-black:rgb(0, 0, 0);
+    --color-grey1:rgb(43, 39, 39);
+    --box-shadow: 0 3px 5px rgba(200,200,200,.5), 0 -3px 5px rgba(200,200,200,.5);
+    --color-btn:#fff;
+    --gradient-dark:90deg , #000 25%, rgb(37, 36, 39) 100%;
+    --gradient-light: 90deg , rgb(236, 226, 226) 0%, rgb(108, 107, 110) 75%;
+  }
+
+  a {
+    color: var(--color-white);
+    text-decoration: none;
+  }
+
+body{
+    background-color: black;
+    color: white;
+    font-family: 'PT Serif', serif;
+}
+
+h1, h2{
+  font-family: 'Bebas Neue', cursive;
+  letter-spacing: 2px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #333;
+    color: #fff;
+    height: 75px;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  #left-text a{
+    font-family: 'Bebas Neue', cursive;
+    font-size: 40px;
+  }
+  
+  nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  
+  nav ul li {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 17px;
+    text-decoration: none;
+    padding: 0 10px;
+    white-space: nowrap;
+  }
+  
+
+.logout-btn input[type="submit"]{
+    height: 40px;
+    width: 100px;
+    font-size: 18px;
+    background-color: var(--color-secondary);
+    border-radius: 10px;
+    font-weight: 500;
+    border: none;
+    text-decoration: none;
+  }
+
+
+
+.card-container {
+    padding-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .card {
+    padding: 0 20px;
+    width: calc(28vw - 10px);
+    min-width: 50px;
+    height: 180px;
+    background-color: var(--color-grey1);
+    border-radius: 15px;
+    margin: 5px;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .card h2 {
+    margin-top: 20px;
+  }
+
+  .card p{
+    padding-top: 10px;
+  }
+
+  .play-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+  }

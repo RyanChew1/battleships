@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Battleship</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Serif&display=swap" rel="stylesheet">
+ 
+    </head>
+    <body>
+        <nav>
+            <div id="left-text"><a href="/">BATTLESHIPS</a> </div>
+            <ul>
+                <nav>
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Sign Up</a>
+                  </nav>
+            </ul>
+          </nav>
+            
+        
+          <section class="signup">
+          <div class="signup-card">
+            <h1 class="signup-header">Signup</h1>
+            <form action="{{ url_for('signup') }}" method="post">
+                <p>Username:</p>
+                <input type="text" id="username" name="username" required size="40">
+                <p>Password:</p>
+                <input type="password" id="password" name="password" required size="40">
+                <div id="error-message" style="display:{{ visibility }}">Username is already taken!</div>
+                <input type="submit" value="Sign Up">
+            </form>
+            <p class="already-have">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+          </div>
+          </section>
+        <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+    </body>
+</html>

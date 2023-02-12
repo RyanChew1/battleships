@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Battleships</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles2.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Serif&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+      </head>
+    <body>
+        <nav>
+            <div id="left-text"><a href="/">BATTLESHIPS</a> </div>
+            <ul class="nav-logged">
+                <nav>
+                    <div class="logout-btn">
+                    <form action="{{ url_for('logout') }}">
+                        <input type="submit" id = 'logout-btn'value="Log Out">
+                    </form>
+                    </div>
+                  </nav>
+            </ul>
+          </nav>
+    <section class="main">
+        
+      <h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
+      <div class="message_holder"></div>
+  
+      <form action="" method="POST">
+        <input type="text" class="username" placeholder="User Name"/>
+        <input type="text" class="message" placeholder="Messages"/>
+        <input type="submit"/>
+      </form>
+
+        <div class="card-container">
+            <div class="card">
+              <h2>Standard</h2>
+              <p>1-minute per moves. Destroy all enemy ships to win.</p>
+              <div class="play-button"><a href="standard.html"><i class="fas fa-play"></i></a></div>
+            </div>
+            <div class="card">
+              <h2>Rapid</h2>
+              <p>5 seconds per move. Destroy all enemy sihps to win.</p>
+              <div class="play-button"><a href="rapid.html"><i class="fas fa-play"></i></a></div>
+            </div>
+            <div class="card">
+              <h2>Reinforcement</h2>
+              <p>Place down new ships every 10 turns.</p>
+              <div class="play-button"><a href="reinforcement.html"><i class="fas fa-play"></i></a></div>
+            </div>
+            <div class="card">
+              <h2>Sailing</h2>
+              <p>Standard mode, with a twist. Move your ships once every 3 turns.</p>
+              <div class="play-button"><a href="sailing.html"><i class="fas fa-play"></i></a></div>
+            </div>
+            <div class="card">
+                <h2>Advanced</h2>
+                <p>Standard mode with added special moves.</p>
+                <div class="play-button"><a href="advanced.html"><i class="fas fa-play"></i></a></div>
+              </div>
+          </div>
+        </div>
+    </section>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let user_name = $( 'input.username' ).val()
+          let user_input = $( 'input.message' ).val()
+          socket.emit( 'my event', {
+            user_name : user_name,
+            message : user_input
+          } )
+          $( 'input.message' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'</div>' )
+        }
+      })
+    </script>
+
+    </body>
+</html>
+
+
+

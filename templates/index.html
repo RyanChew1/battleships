@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Battleships</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Serif&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <nav>
+            <div id="left-text"><a href="/">BATTLESHIPS</a> </div>
+            <ul>
+                <nav>
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Sign Up</a>
+                  </nav>
+            </ul>
+          </nav>
+
+          <section class="hero">
+        <div class="hero-img">
+            <img src="https://cdn.cloudflare.steamstatic.com/steam/apps/1450300/capsule_616x353.jpg?t=1650457850"> <!-- img/keyboard.jpg -->
+        </div>
+        <div class="hero-txt">
+            <h1>BATTLESHIPS</h1>
+            <p>A fun game to play with friends and family!</p>
+            <a href="signup.html" class="main-btn"><button>Play Now</button></a>
+
+        </div>   
+    </section>
+    <footer>
+        <p>image source <a href="https://cdn.cloudflare.steamstatic.com/steam/apps/1450300/capsule_616x353.jpg?t=1650457850">Steam</a></p>
+    </footer>
+        <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+    </body>
+</html>
+
+
+

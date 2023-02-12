@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Battleships</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='games.css') }}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=PT+Serif&display=swap" rel="stylesheet">
+ 
+    </head>
+    <body>
+        <nav>
+            <div id="left-text"><a href="/">BATTLESHIPS</a> </div>
+            <ul class="nav-logged">
+                <nav>
+                    <a href="/">Games</a>
+                    <div class="logout-btn">
+                    <form action="{{ url_for('logout') }}">
+                        <input type="submit" id = 'logout-btn'value="Log Out">
+                    </form>
+                    </div>
+                  </nav>
+            </ul>
+          </nav>
+    <section class="game">
+        <div class="header">
+            <h1>Standard Mode</h1>
+            <p class="instruct">Places down you ships!</p>
+        </div>
+    <div class="boards">
+        <div class="ocean-board">
+        <h2 class="target-text">Ocean</h2>
+      <table class="ocean">
+        <tr>
+          <td></td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>A</td>
+          <td>{{ a1 }}</td>
+          <td>{{ a2 }}</td>
+          <td>{{ a3 }}</td>
+          <td>{{ a4 }}</td>
+          <td>{{ a5 }}</td>
+          <td>{{ a6 }}</td>
+          <td>{{ a7 }}</td>
+          <td>{{ a8 }}</td>
+          <td>{{ a9 }}</td>
+          <td>{{ a10 }}</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>{{ b1 }}</td>
+          <td>{{ b2 }}</td>
+          <td>{{ b3 }}</td>
+          <td>{{ b4 }}</td>
+          <td>{{ b5 }}</td>
+          <td>{{ b6 }}</td>
+          <td>{{ b7 }}</td>
+          <td>{{ b8 }}</td>
+          <td>{{ b9 }}</td>
+          <td>{{ b10 }}</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>{{ c1 }}</td>
+          <td>{{ c2 }}</td>
+          <td>{{ c3 }}</td>
+          <td>{{ c4 }}</td>
+          <td>{{ c5 }}</td>
+          <td>{{ c6 }}</td>
+          <td>{{ c7 }}</td>
+          <td>{{ c8 }}</td>
+          <td>{{ c9 }}</td>
+          <td>{{ c10 }}</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>{{ d1 }}</td>
+          <td>{{ d2 }}</td>
+          <td>{{ d3 }}</td>
+          <td>{{ d4 }}</td>
+          <td>{{ d5 }}</td>
+          <td>{{ d6 }}</td>
+          <td>{{ d7 }}</td>
+          <td>{{ d8 }}</td>
+          <td>{{ d9 }}</td>
+          <td>{{ d10 }}</td>
+        </tr>
+        <tr>
+          <td>E</td>
+          <td>{{ e1 }}</td>
+          <td>{{ e2 }}</td>
+          <td>{{ e3 }}</td>
+          <td>{{ e4 }}</td>
+          <td>{{ e5 }}</td>
+          <td>{{ e6 }}</td>
+          <td>{{ e7 }}</td>
+          <td>{{ e8 }}</td>
+          <td>{{ e9 }}</td>
+          <td>{{ e10 }}</td>
+        </tr>
+        <tr>
+            <td>F</td>
+            <td>{{ f1 }}</td>
+            <td>{{ f2 }}</td>
+            <td>{{ f3 }}</td>
+            <td>{{ f4 }}</td>
+            <td>{{ f5 }}</td>
+            <td>{{ f6 }}</td>
+            <td>{{ f7 }}</td>
+            <td>{{ f8 }}</td>
+            <td>{{ f9 }}</td>
+            <td>{{ f10 }}</td>
+          </tr>
+          <tr>
+            <td>G</td>
+            <td>{{ g1 }}</td>
+            <td>{{ g2 }}</td>
+            <td>{{ g3 }}</td>
+            <td>{{ g4 }}</td>
+            <td>{{ g5 }}</td>
+            <td>{{ g6 }}</td>
+            <td>{{ g7 }}</td>
+            <td>{{ g8 }}</td>
+            <td>{{ g9 }}</td>
+            <td>{{ g10 }}</td>
+          </tr>
+          <tr>
+            <td>H</td>
+            <td>{{ h1 }}</td>
+            <td>{{ h2 }}</td>
+            <td>{{ h3 }}</td>
+            <td>{{ h4 }}</td>
+            <td>{{ h5 }}</td>
+            <td>{{ h6 }}</td>
+            <td>{{ h7 }}</td>
+            <td>{{ h8 }}</td>
+            <td>{{ h9 }}</td>
+            <td>{{ h10 }}</td>
+          </tr>
+          <tr>
+            <td>I</td>
+            <td>{{ i1 }}</td>
+            <td>{{ i2 }}</td>
+            <td>{{ i3 }}</td>
+            <td>{{ i4 }}</td>
+            <td>{{ i5 }}</td>
+            <td>{{ i6 }}</td>
+            <td>{{ i7 }}</td>
+            <td>{{ i8 }}</td>
+            <td>{{ i9 }}</td>
+            <td>{{ i10 }}</td>
+          </tr>
+          <tr>
+            <td>J</td>
+            <td>{{ j1 }}</td>
+            <td>{{ j2 }}</td>
+            <td>{{ j3 }}</td>
+            <td>{{ j4 }}</td>
+            <td>{{ j5 }}</td>
+            <td>{{ j6 }}</td>
+            <td>{{ j7 }}</td>
+            <td>{{ j8 }}</td>
+            <td>{{ j9 }}</td>
+            <td>{{ j10 }}</td>
+          </tr>
+        </table>
+    </div>
+    <div class="target-board">
+        <h2 class="target-text">Target</h2>
+        <table class="target">
+            <tr>
+                <td></td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+                <td>4</td>
+                <td>5</td>
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+              </tr>
+              <tr>
+                <td>A</td>
+                <td>{{ Ta1 }}</td>
+                <td>{{ Ta2 }}</td>
+                <td>{{ Ta3 }}</td>
+                <td>{{ Ta4 }}</td>
+                <td>{{ Ta5 }}</td>
+                <td>{{ Ta6 }}</td>
+                <td>{{ Ta7 }}</td>
+                <td>{{ Ta8 }}</td>
+                <td>{{ Ta9 }}</td>
+                <td>{{ Ta10 }}</td>
+              </tr>
+              <tr>
+                <td>B</td>
+                <td>{{ Tb1 }}</td>
+                <td>{{ Tb2 }}</td>
+                <td>{{ Tb3 }}</td>
+                <td>{{ Tb4 }}</td>
+                <td>{{ Tb5 }}</td>
+                <td>{{ Tb6 }}</td>
+                <td>{{ Tb7 }}</td>
+                <td>{{ Tb8 }}</td>
+                <td>{{ Tb9 }}</td>
+                <td>{{ Tb10 }}</td>
+              </tr>
+              <tr>
+                <td>C</td>
+                <td>{{ Tc1 }}</td>
+                <td>{{ Tc2 }}</td>
+                <td>{{ Tc3 }}</td>
+                <td>{{ Tc4 }}</td>
+                <td>{{ Tc5 }}</td>
+                <td>{{ Tc6 }}</td>
+                <td>{{ Tc7 }}</td>
+                <td>{{ Tc8 }}</td>
+                <td>{{ Tc9 }}</td>
+                <td>{{ Tc10 }}</td>
+              </tr>
+              <tr>
+                <td>D</td>
+                <td>{{ Td1 }}</td>
+                <td>{{ Td2 }}</td>
+                <td>{{ Td3 }}</td>
+                <td>{{ Td4 }}</td>
+                <td>{{ Td5 }}</td>
+                <td>{{ Td6 }}</td>
+                <td>{{ Td7 }}</td>
+                <td>{{ Td8 }}</td>
+                <td>{{ Td9 }}</td>
+                <td>{{ Td10 }}</td>
+              </tr>
+              <tr>
+                <td>E</td>
+                <td>{{ Te1 }}</td>
+                <td>{{ Te2 }}</td>
+                <td>{{ Te3 }}</td>
+                <td>{{ Te4 }}</td>
+                <td>{{ Te5 }}</td>
+                <td>{{ Te6 }}</td>
+                <td>{{ Te7 }}</td>
+                <td>{{ Te8 }}</td>
+                <td>{{ Te9 }}</td>
+                <td>{{ Te10 }}</td>
+              </tr>
+              <tr>
+                  <td>F</td>
+                  <td>{{ Tf1 }}</td>
+                  <td>{{ Tf2 }}</td>
+                  <td>{{ Tf3 }}</td>
+                  <td>{{ Tf4 }}</td>
+                  <td>{{ Tf5 }}</td>
+                  <td>{{ Tf6 }}</td>
+                  <td>{{ Tf7 }}</td>
+                  <td>{{ Tf8 }}</td>
+                  <td>{{ Tf9 }}</td>
+                  <td>{{ Tf10 }}</td>
+                </tr>
+                <tr>
+                  <td>G</td>
+                  <td>{{ Tg1 }}</td>
+                  <td>{{ Tg2 }}</td>
+                  <td>{{ Tg3 }}</td>
+                  <td>{{ Tg4 }}</td>
+                  <td>{{ Tg5 }}</td>
+                  <td>{{ Tg6 }}</td>
+                  <td>{{ Tg7 }}</td>
+                  <td>{{ Tg8 }}</td>
+                  <td>{{ Tg9 }}</td>
+                  <td>{{ Tg10 }}</td>
+                </tr>
+                <tr>
+                  <td>H</td>
+                  <td>{{ Th1 }}</td>
+                  <td>{{ Th2 }}</td>
+                  <td>{{ Th3 }}</td>
+                  <td>{{ Th4 }}</td>
+                  <td>{{ Th5 }}</td>
+                  <td>{{ Th6 }}</td>
+                  <td>{{ Th7 }}</td>
+                  <td>{{ Th8 }}</td>
+                  <td>{{ Th9 }}</td>
+                  <td>{{ Th10 }}</td>
+                </tr>
+                <tr>
+                  <td>I</td>
+                  <td>{{ Ti1 }}</td>
+                  <td>{{ Ti2 }}</td>
+                  <td>{{ Ti3 }}</td>
+                  <td>{{ Ti4 }}</td>
+                  <td>{{ Ti5 }}</td>
+                  <td>{{ Ti6 }}</td>
+                  <td>{{ Ti7 }}</td>
+                  <td>{{ Ti8 }}</td>
+                  <td>{{ Ti9 }}</td>
+                  <td>{{ Ti10 }}</td>
+                </tr>
+                <tr>
+                  <td>J</td>
+                  <td>{{ Tj1 }}</td>
+                  <td>{{ Tj2 }}</td>
+                  <td>{{ Tj3 }}</td>
+                  <td>{{ Tj4 }}</td>
+                  <td>{{ Tj5 }}</td>
+                  <td>{{ Tj6 }}</td>
+                  <td>{{ Tj7 }}</td>
+                  <td>{{ Tj8 }}</td>
+                  <td>{{ Tj9 }}</td>
+                  <td>{{ Tj10 }}</td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </section>
+    
+        <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+    </body>
+</html>
+
+
+
