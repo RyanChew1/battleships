@@ -1,0 +1,7 @@
+# Flask_SocketIO==
+Flask==2.1.0
+Flask-Session==0.3.2
+mysql.connector
+
+Werkzeug==2.0.1
+flask-socketio==4.3.2
