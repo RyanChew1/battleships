@@ -111,15 +111,18 @@
               </div>
           </div>
         </div>
-
-
+      </section>
+  <section class="chatsec">
+    <h1 id="chat-header">CHAT</h1>
     <div class="chat-container">
         <div class="chat">
           <div class="chat-box">
             <form class="form-signin" action="{{url_for('chat')}}" method="POST">
-              <h1 class="h2 mb-3 font-weight-normal">Chat TPG</h1>
-              <!-- <p id="err" style="display:{{ visibility }}">Code taken. Join or generate new.</p> -->
+              <h1 class="h2 mb-3 font-weight-normal">CHAT</h1>
+              
               <input type="text" id="room" name="room" class="form-control" placeholder="Room Code" required><br>
+              <p id="err" style="display:{{ visibility }}">Room doesn't exist! Use "Create Room" to make new room.</p>
+              <p id="err" style="display:{{ vis2 }}">Room Full!</p>
               <button  class="btn btn-lg btn-primary btn-block" value="submit">Join Room</button>
             </form>
               <form id="create-btn" action="{{ url_for('create') }}" method="post">
@@ -162,7 +165,6 @@
       });
   </script>
   <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
-
 
     </body>
 </html>

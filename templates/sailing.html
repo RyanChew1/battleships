@@ -334,7 +334,25 @@
         </div>
         </div>
     </section>
-    
+    <section class="chatsec">
+      <div class="chat-container">
+          
+      
+  
+        <div class="chatwindow">
+          <div class="chat-txt">
+            <h2 >Chat Room</h2>
+            <h2>Room Code: {{session['room']}}</h2>
+            <button type="button" class="btn btn-danger" id="leave-btn" onclick=leave_room()>Leave this Chat</button>
+          </div>
+          
+          <textarea id="chat" rows="10" placeholder="No messages yet. Start one..."></textarea><br /><br />
+          <input type="text" id="text" size="60" placeholder="Enter your message here" />
+          <button type="button" id="send" class="btn btn-success">SEND</button><br /><br />
+          
+        </div>
+    </div>
+    </section>
         <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
     </body>
 </html>
