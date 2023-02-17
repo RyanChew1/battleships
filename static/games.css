@@ -85,7 +85,7 @@ nav {
   }
 
 .game{
-    height: 150vh;
+    height: 190vh;
 }
 
 .name{
@@ -252,4 +252,8 @@ table{
 
   #leave-btn{
     margin-bottom: 10px;
+  }
+
+  #x{
+    display: inline;
   }

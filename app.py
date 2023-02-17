@@ -93,42 +93,58 @@ def logout():
 
 
 
-boardSize = {'a1V': 'none', 'b1V': 'none', 'c1V': 'none', 'd1V': 'none', 'e1V': 'none', 'f1V': 'none', 'g1V': 'none', 'h1V': 'none', 'i1V': 'none', 'j1V': 'none',
-            'a2V': 'none', 'b2V': 'none', 'c2V': 'none', 'd2V': 'none', 'e2V': 'none', 'f2V': 'none', 'g2V': 'none', 'h2V': 'none', 'i2V': 'none', 'j2V': 'none',
-            'a3V': 'none', 'b3V': 'none', 'c3V': 'none', 'd3V': 'none', 'e3V': 'none', 'f3V': 'none', 'g3V': 'none', 'h3V': 'none', 'i3V': 'none', 'j3V': 'none',
-            'a4V': 'none', 'b4V': 'none', 'c4V': 'none', 'd4V': 'none', 'e4V': 'none', 'f4V': 'none', 'g4V': 'none', 'h4V': 'none', 'i4V': 'none', 'j4V': 'none',
-            'a5V': 'none', 'b5V': 'none', 'c5V': 'none', 'd5V': 'none', 'e5V': 'none', 'f5V': 'none', 'g5V': 'none', 'h5V': 'none', 'i5V': 'none', 'j5V': 'none',
-            'a6V': 'none', 'b6V': 'none', 'c6V': 'none', 'd6V': 'none', 'e6V': 'none', 'f6V': 'none', 'g6V': 'none', 'h6V': 'none', 'i6V': 'none', 'j6V': 'none',
-            'a7V': 'none', 'b7V': 'none', 'c7V': 'none', 'd7V': 'none', 'e7V': 'none', 'f7V': 'none', 'g7V': 'none', 'h7V': 'none', 'i7V': 'none', 'j7V': 'none',
-            'a8V': 'none', 'b8V': 'none', 'c8V': 'none', 'd8V': 'none', 'e8V': 'none', 'f8V': 'none', 'g8V': 'none', 'h8V': 'none', 'i8V': 'none', 'j8V': 'none',
-            'a9V': 'none', 'b9V': 'none', 'c9V': 'none', 'd9V': 'none', 'e9V': 'none', 'f9V': 'none', 'g9V': 'none', 'h9V': 'none', 'i9V': 'none', 'j9V': 'none', 
-            'a10V': 'none', 'b10V': 'none', 'c10V': 'none', 'd10V': 'none', 'e10V': 'none', 'f10V': 'none', 'g10V': 'none', 'h10V': 'none', 'i10V': 'none', 'j10V': 'none',
-            'VA': 'none', 'VB': 'none', 'VC': 'none', 'VD': 'none', 'VE': 'none', 'VF': 'none', 'VG': 'none', 'VH': 'none', 'VI': 'none', 'VJ': 'none',
-            'V1': 'none', 'V2': 'none', 'V3': 'none', 'V4': 'none', 'V5': 'none', 'V6': 'none', 'V7': 'none', 'V8': 'none', 'V9': 'none', 'V10': 'none'}
-
 mapSize = {
-    1:'A',
-    2:'B',
-    3:'C',
-    4:'D',
-    5:'E',
-    6:'F',
-    7:'G',
-    8:'H',
-    9:'I',
-    10:'J'
+    'A':1,
+    'B':2,
+    'C':3,
+    'D':4,
+    'E':5,
+    'F':6,
+    'G':7,
+    'H':8,
+    'I':9,
+    'J':10
 }
 
 # game modes
 @app.route('/standard.html', methods=['GET', 'POST'])
 def standard():
+    boardSize = {'a1V': 'table-cell', 'b1V': 'table-cell', 'c1V': 'table-cell', 'd1V': 'table-cell', 'e1V': 'table-cell', 'f1V': 'table-cell', 'g1V': 'table-cell', 'h1V': 'table-cell', 'i1V': 'table-cell', 'j1V': 'table-cell',
+                'a2V': 'table-cell', 'b2V': 'table-cell', 'c2V': 'table-cell', 'd2V': 'table-cell', 'e2V': 'table-cell', 'f2V': 'table-cell', 'g2V': 'table-cell', 'h2V': 'table-cell', 'i2V': 'table-cell', 'j2V': 'table-cell',
+                'a3V': 'table-cell', 'b3V': 'table-cell', 'c3V': 'table-cell', 'd3V': 'table-cell', 'e3V': 'table-cell', 'f3V': 'table-cell', 'g3V': 'table-cell', 'h3V': 'table-cell', 'i3V': 'table-cell', 'j3V': 'table-cell',
+                'a4V': 'table-cell', 'b4V': 'table-cell', 'c4V': 'table-cell', 'd4V': 'table-cell', 'e4V': 'table-cell', 'f4V': 'table-cell', 'g4V': 'table-cell', 'h4V': 'table-cell', 'i4V': 'table-cell', 'j4V': 'table-cell',
+                'a5V': 'table-cell', 'b5V': 'table-cell', 'c5V': 'table-cell', 'd5V': 'table-cell', 'e5V': 'table-cell', 'f5V': 'table-cell', 'g5V': 'table-cell', 'h5V': 'table-cell', 'i5V': 'table-cell', 'j5V': 'table-cell',
+                'a6V': 'table-cell', 'b6V': 'table-cell', 'c6V': 'table-cell', 'd6V': 'table-cell', 'e6V': 'table-cell', 'f6V': 'table-cell', 'g6V': 'table-cell', 'h6V': 'table-cell', 'i6V': 'table-cell', 'j6V': 'table-cell',
+                'a7V': 'table-cell', 'b7V': 'table-cell', 'c7V': 'table-cell', 'd7V': 'table-cell', 'e7V': 'table-cell', 'f7V': 'table-cell', 'g7V': 'table-cell', 'h7V': 'table-cell', 'i7V': 'table-cell', 'j7V': 'table-cell',
+                'a8V': 'table-cell', 'b8V': 'table-cell', 'c8V': 'table-cell', 'd8V': 'table-cell', 'e8V': 'table-cell', 'f8V': 'table-cell', 'g8V': 'table-cell', 'h8V': 'table-cell', 'i8V': 'table-cell', 'j8V': 'table-cell',
+                'a9V': 'table-cell', 'b9V': 'table-cell', 'c9V': 'table-cell', 'd9V': 'table-cell', 'e9V': 'table-cell', 'f9V': 'table-cell', 'g9V': 'table-cell', 'h9V': 'table-cell', 'i9V': 'table-cell', 'j9V': 'table-cell',
+                'a10V': 'table-cell', 'b10V': 'table-cell', 'c10V': 'table-cell', 'd10V': 'table-cell', 'e10V': 'table-cell', 'f10V': 'table-cell', 'g10V': 'table-cell', 'h10V': 'table-cell', 'i10V': 'table-cell', 'j10V': 'table-cell',
+                'VA': 'table-row', 'VB': 'table-row', 'VC': 'table-row', 'VD': 'table-row', 'VE': 'table-row', 'VF': 'table-row', 'VG': 'table-row', 'VH': 'table-row', 'VI': 'table-row', 'VJ': 'table-row',
+                'V1': 'table-cell','V2': 'table-cell','V3': 'table-cell','V4': 'table-cell','V5': 'table-cell','V6': 'table-cell','V7': 'table-cell','V8': 'table-cell','V9': 'table-cell','V10': 'table-cell'}
+
     if request.method == 'POST':
         rowSize = int(request.form['rowSize'])
         colSize = int(request.form['colSize'])
         #set display based on inputs
         for i in boardSize:
-            pass
-        return render_template("standard.html",**boardSize)
+            if i[0] != 'V':
+                col = int(i[1:-1]) #only number
+                row = i[0].upper() #only first letter
+                row = mapSize[row] #convert to number
+                if row>rowSize or col>colSize:
+                    boardSize[i] = 'none'
+
+                
+            else:
+                if i[1:].isnumeric():
+                    if int(i[1:])>colSize:
+                        boardSize[i] = 'none'
+                else:
+                    row = i[1:]
+                    if mapSize[row]>rowSize:
+                        boardSize[i]= 'none'
+
+        return render_template("standard.html",**boardSize, vis3 = 'none')
     else:
         return render_template('standard.html',**boardSize)
 
@@ -286,6 +302,6 @@ map_row = {
 
 if __name__ == '__main__':
     #app.run(host='10.0.0.31', port=5000, debug=True)
-    socketio.run(app=app,host='10.0.0.31', port=5000, debug=True)
+    socketio.run(app=app,host='localhost', port=5000, debug=True)
 
-
+#HOME BUTTON LOGS OUT
