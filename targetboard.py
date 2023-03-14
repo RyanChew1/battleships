@@ -23,7 +23,7 @@ class TargetBoard(Board):
     # "x" represents red peg
     def markHit(self, r: int, c: int) -> None:
         # put a red peg("x") at this location
-        self.putPiece("x", r, c)
+        self.putPiece(u'\u001b[1m\u001b[38;5;196m{}\u001b[0m'.format("x"), r, c)
 
     # place a "white peg" at (r, c)
     # "o" represents white peg

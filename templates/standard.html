@@ -59,12 +59,12 @@
           <div id="output"></div>
         </div>
         <div class="boardSize">
-          <p id="size-txt" style="display: {{ vis3 }}">Enter Board Size</p>
+          <p id="size-txt">Enter Board Size</p>
           <form method="post" action="{{ url_for('standard') }}" >
-            <input style="display: {{ vis3 }}" class='sizeIn'type="number" name="rowSize" min="6" max="10" placeholder="rows">
-            <p style="display: {{ vis3 }}" id="x">x</p>
-            <input style="display: {{ vis3 }}" class='sizeIn' type="number" name="colSize" min="6" max="10"placeholder="cols">
-            <button style="display: {{ vis3 }}" type="submit" class="submit-btn">Submit</button>
+            <input class='sizeIn'type="number" name="rowSize" min="6" max="10" placeholder="rows">
+            x
+            <input class='sizeIn' type="number" name="colSize" min="6" max="10"placeholder="cols">
+            <button type="submit" class="submit-btn">Submit</button>
           </form>
         </div>
     <div class="boards">

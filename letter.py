@@ -11,6 +11,7 @@ class Letter:
         self.color = color
 
     def __str__(self):
+        ch = self.ch
         # 256-color mode
         # foreground ESC[38;5;#m
         # background ESC[48;5;#m
@@ -24,5 +25,5 @@ class Letter:
         elif self.color == 'red':
             # light gray
             ch = u'\u001b[1m\u001b[38;5;196m{}\u001b[0m'.format(self.ch)
-        return ch
+        return str(ch)
     

@@ -10,7 +10,7 @@ class OceanBoard(Board):
 
     def __init__(self, rsize: int, csize: int):
         # call parent's __init__
-        # TODO
+        super().__init__(rsize, csize)
         self.ships = []
 
     # return False if ship could not be placed at r, c
@@ -20,10 +20,41 @@ class OceanBoard(Board):
     # Modify 'ship' with the given (r, c) and orientation
     # Add 'ship' to the the OceanBoard's list of 'ships' if placed successfully
     def placeShip(self, ship: Ship, r: int, c: int, orientation: str) -> bool:
-        # TODO
-        return False
+        if r < 0 or r >= self.rowSize() or c < 0 or c >= self.colSize():
+            return False
+        if orientation == 'h':
+            if c + ship.getSize() > self.colSize():
+                
+                return False
+            for i in range(ship.getSize()):
+                if self.getPiece(r,c+i) is not None:
+                    
+                    print(f'{self.getPiece(r,c+i)}')
+                    return False
+            for i in range(ship.getSize()):
+                self.putPiece(ship.getType()[0], r,c+i) 
+                ship.setLocation(r+1, c+1) #used to be c+i
+        elif orientation == 'v':
+            if r + ship.getSize() > self.rowSize():
+                
+                return False
+            for i in range(ship.getSize()):
+                if self.getPiece(r+i,c) is not None:
+                    
+                    return False
+            for i in range(ship.getSize()):
+                self.putPiece(ship.getType()[0], r+i,c) 
+                ship.setLocation(r+1, c+1) # used to be r+i
+                ship.setHorizontal(False)
+        else:
+            
+            return False
+        self.ships.append(ship)
+        return True
 
     # are all 'ships' in the OceanBoard sunk?
     def allShipsSunk(self):
-        # TODO
-        return False
+        for ship in self.ships:
+            if not ship.isSunk():
+                return False
+        return True
