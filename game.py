@@ -78,45 +78,25 @@ def turn(d: Display, p1: BattleshipPlayer, p2: BattleshipPlayer, playerGuessing:
             break    
         if not player.target.isEmpty(int(row),int(col)):
             d.message("You have already shot here! Turn Lost!")
+            return False
         else:
-            if opponent.ocean.getPiece(int(row),int(col)-1) is not None:
-                ship = opponent.ocean.getPiece(int(row), int(col)-1)
-                
+            (hit,sunk,shipName) = opponent.shotAt(row,col)
+            
+            if hit:
 
-                for i in opponent.ocean.ships:
-                    loc = i.getLocation()
-                    h = i.isHorizontal()
-                    size = i.getSize()
-                   
-                    squares = []
-                    
-                    for j in range(size):
-                        if h:
-                            squares.append((loc[0],loc[1]+j))
-                        else:
-                            squares.append((loc[0]+j,loc[1]))
-                
-                    if (int(row)+1,int(col)) in squares:
-                        hitShip = i
-                    
-                print('')
-                if hitShip.isHitAt(int(row),int(col)-1):
-                    d.message("You have already shot here! Turn Lost! \n")
-                    return False
-                hitShip.markHitAt(int(row),int(col))
-                
-                d.message(f"You hit {opponent.getName()}'s {hitShip.getType()}! \n")
-
-                if hitShip.isSunk():
-                    d.message(f"You sunk {opponent.getName()}'s {hitShip.getType()}! \n")
-
+                d.message(f"You hit {opponent.getName()}'s {shipName}! \n")
+                if sunk:
+                    d.message(f"You sunk {opponent.getName()}'s {shipName}! \n")
                 if opponent.allShipsSunk():
                     print("YES")
                     d.message(f"You sunk all of {opponent.getName()}'s ships! \n")
                     return True
                 player.target.markHit(int(row),int(col)-1)
-                opponent.ocean.putPiece(Letter(hitShip.getType()[0].upper(), 'red'), int(row),int(col)-1)  # FIX THIS
+                opponent.ocean.putPiece(Letter(shipName[0].upper(), 'red'), int(row),int(col)-1)  # FIX THIS
             else:
+                if shipName == 'shot':
+                    d.message("You have already shot here! Turn Lost! \n")
+                    return False
                 d.message(f"You missed {opponent.getName()}'s ships.")
                 player.target.markMiss(int(row),int(col)-1)
                 opponent.ocean.putPiece(Letter('O', 'white'), int(row),int(col)-1) # FIX THIS

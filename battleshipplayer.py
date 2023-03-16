@@ -66,7 +66,42 @@ class BattleshipPlayer:
       - Mark the ship as being hit
     '''
     def shotAt(self, row: int, col: int) -> tuple:
-        return (None,None,None)
+        hit = False
+        sunk = False
+        
+        if self.ocean.getPiece(int(row),int(col)-1) is not None:
+                ship = self.ocean.getPiece(int(row), int(col)-1)
+                for i in self.ocean.ships:
+                            loc = i.getLocation()
+                            h = i.isHorizontal()
+                            size = i.getSize()
+                        
+                            squares = []
+                            
+                            for j in range(size):
+                                if h:
+                                    squares.append((loc[0],loc[1]+j))
+                                else:
+                                    squares.append((loc[0]+j,loc[1]))
+                        
+                            if (int(row)+1,int(col)) in squares:
+                                hitShip = i
+                    
+        print('')
+        if hitShip.isHitAt(int(row),int(col)-1):
+            # Already Shot
+            return (False, False, "shot")
+        hitShip.markHitAt(int(row),int(col))
+        
+        hit = True
+
+        if hitShip.isSunk():
+            sunk = True
+        
+        if hit:
+           return (hit, sunk, hitShip.getType()) 
+        return (False, False, "")
+
     '''
     Registers a hit on the TargetBoard at the specified (row, col) location
     '''
