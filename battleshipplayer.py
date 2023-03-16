@@ -22,6 +22,8 @@ class BattleshipPlayer:
         self.ocean = OceanBoard(rsize, csize)
         self.target = TargetBoard(rsize, csize)
 
+        self.rsize = rsize
+        self.csize = csize
 
     def getName(self) -> str:
         return self.name
@@ -79,8 +81,8 @@ class BattleshipPlayer:
     be restarted
     '''
     def resetUnit(self) -> None:
-        self.ocean.reset()
-        self.target.reset()
+        self.ocean = OceanBoard(self.rsize, self.csize)
+        self.target = TargetBoard(self.rsize, self.csize)
 
     '''
     Adds num to the score
@@ -126,4 +128,4 @@ class BattleshipPlayer:
         return self.ocean.getPiece(r, c)
 
     def allShipsSunk(self) -> bool:
-        return self.ocean.allShipsSunk()
+        return all([i.isSunk() for i in self.ocean.ships])

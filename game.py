@@ -40,11 +40,16 @@ def turn(d: Display, p1: BattleshipPlayer, p2: BattleshipPlayer, playerGuessing:
     player = p1 if playerGuessing == 1 else p2
     opponent = p2 if playerGuessing == 1 else p1
     d.message(f"{player.getName()} shooting at {opponent.getName()}'s ships")
+    d.message(f"\n{player.getName()}'s BOARDS: ")
     d.displayUnits(player,opponent)
 
-    d.message(f"{opponent.getName()}'s boards: ")
+    d.message(f"\n{opponent.getName()}'s BOARDS: ")
     d.displayUnits(opponent, player)
+    d.message("\n")
+
+    d.clearScreen()
     while True:
+        
         guess = d.ask(f"{player.getName()}, which grid are you shooting? ")
 
         # get row, col of guess
@@ -62,11 +67,13 @@ def turn(d: Display, p1: BattleshipPlayer, p2: BattleshipPlayer, playerGuessing:
         }
         if type(guess) == str and len(guess)>1:
             letter = guess[0]
+            if not str(guess[1:]).isnumeric():
+                return False
             try:
                 row, col = mapping[letter], guess[1:]
             except:
                 print('Invalid input! Turn lost!')
-                continue
+                return False
         else:
             break    
         if not player.target.isEmpty(int(row),int(col)):
@@ -94,12 +101,18 @@ def turn(d: Display, p1: BattleshipPlayer, p2: BattleshipPlayer, playerGuessing:
                     
                 print('')
                 if hitShip.isHitAt(int(row),int(col)-1):
-                    d.message("You have already shot here! Turn Lost!")
-                    continue
+                    d.message("You have already shot here! Turn Lost! \n")
+                    return False
                 hitShip.markHitAt(int(row),int(col))
-                d.message(f"You hit {opponent.getName()}'s {hitShip.getType()}!")
+                
+                d.message(f"You hit {opponent.getName()}'s {hitShip.getType()}! \n")
+
+                if hitShip.isSunk():
+                    d.message(f"You sunk {opponent.getName()}'s {hitShip.getType()}! \n")
+
                 if opponent.allShipsSunk():
-                    d.message(f"You sunk all of {opponent.getName()}'s ships!")
+                    print("YES")
+                    d.message(f"You sunk all of {opponent.getName()}'s ships! \n")
                     return True
                 player.target.markHit(int(row),int(col)-1)
                 opponent.ocean.putPiece(Letter(hitShip.getType()[0].upper(), 'red'), int(row),int(col)-1)  # FIX THIS
@@ -118,32 +131,34 @@ def playBattleship(d: Display, settings: Setting) -> None:
         name = input(f"Enter player {i+1} name: ")
         players.append(BattleshipPlayer(name))
         
-    # Place ships for each player
-    for player in players:
-        initPlayer(d, player)
-    
-    # Play the game until one player sinks all of the opponent's ships
-    winner = None
-    while winner is None:
-        for i in range(2):
-            if turn(d, players[0], players[1], i+1):
-                winner = players[i]
-                break
-    
-    # Add one point to the winner and display the final scores
-    winner.addPoint()
-    d.clearScreen()
-    for player in players:
-        d.displayUnits(player.getName(), player.getOceanBoard(), player.getTargetBoard())
-        d.message(f"{player.getName()} score: {player.getScore()}")
-    d.message(f"{winner.getName()} wins!")
-    
-    # Ask if players want to play again
-    again = input("Play again? (y/n): ")
-    if again.lower() == 'y':
+    def battleshipGame():
+        # Place ships for each player
         for player in players:
-            player.resetBoards()
-        playBattleship(d, settings)
+            initPlayer(d, player)
+        
+        # Play the game until one player sinks all of the opponent's ships
+        winner = None
+        while winner is None:
+            for i in range(2):
+                if turn(d, players[0], players[1], i+1):
+                    winner = players[i]
+                    break
+        
+        # Add one point to the winner and display the final scores
+        winner.updateScore(1)
+        d.clearScreen()
+        d.message(f"{winner.getName()} wins!")
+        for player in players:
+            d.message(f"{player.getName()} score: {player.getScore()}")
+        
+        
+        # Ask if players want to play again
+        again = input("Play again? (y/n): ")
+        if again.lower() == 'y':
+            for player in players:
+                player.resetUnit()
+            battleshipGame()
+    battleshipGame()
 
 
 def main():
@@ -155,6 +170,7 @@ def main():
     settings.setSetting('numplayers', 2)
 
     playBattleship(d, settings)
+
 
 if __name__ == "__main__":
     main()
