@@ -216,6 +216,30 @@ table{
     margin-bottom: 20px;
     background-color: var(--color-grey2);
   }
+
+/* board */
+.no-point{
+  pointer-events: none;
+}
+
+.ocean td {
+  background-color: black; /* set the default background color */
+  text-align: center;
+}
+
+.ocean .highlight {
+  background-color: var(--color-primary); /* set the highlighted background color */
+}
+
+.target td {
+  background-color: black; /* set the default background color */
+  text-align: center;
+}
+
+.target .highlight {
+  background-color: var(--color-primary); /* set the highlighted background color */
+}
+
   /* chat */
 #chat{
   width: 75%;
@@ -253,3 +277,4 @@ table{
   #leave-btn{
     margin-bottom: 10px;
   }
+

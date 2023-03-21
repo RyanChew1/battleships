@@ -29,10 +29,3 @@ class Board:
             for c in range(len(self.board[0])):
                 self.board[r][c] = None
     ###### DO NOT EDIT ANYTHING IN THIS CLASS ######
-
-
-class subBoard(Board):
-    def __init__(self, rsize: int, csize: int, db):
-        # call parent's __init__
-        super().__init__(rsize, csize)
-        self.ships = []

@@ -103,6 +103,7 @@ def turn(d: Display, p1: BattleshipPlayer, p2: BattleshipPlayer, playerGuessing:
             break
     return False
 
+
 def playBattleship(d: Display, settings: Setting) -> None:
     # Get player names and create BattleshipPlayer objects for each player
     players = []

@@ -130,23 +130,29 @@ class BattleshipPlayer:
     orientation: 'h' or 'v' for horizontal or vertical
     return: True if ship was successfully placed
     '''
-    def placeShip(self, ship: Ship, row, col, orientation: str) -> bool:
-        # mapping = {
-        #     'a':0,
-        #     'b':1,
-        #     'c':2,
-        #     'd':3,
-        #     'e':4,
-        #     'f':5,
-        #     'g':6,
-        #     'h':7,
-        #     'i':8,
-        #     'j':9
-        # }
-        # letter = loc[0]
-        # if type(loc) == str:
-
-
+    def placeShip(self, ship: Ship, loc: str, orientation: str) -> bool:
+        mapping = {
+            'a':0,
+            'b':1,
+            'c':2,
+            'd':3,
+            'e':4,
+            'f':5,
+            'g':6,
+            'h':7,
+            'i':8,
+            'j':9
+        }
+        letter = loc[0]
+        if type(loc) == str:
+            try:
+                row, col = mapping[letter], loc[1:]
+            except:
+                return False
+        else:
+            row, col = loc
+        if not col.isnumeric():
+            return False
         return self.ocean.placeShip(ship, int(row), int(col)-1, orientation)
 
     '''
