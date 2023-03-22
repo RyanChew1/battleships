@@ -32,7 +32,9 @@ h1, h2{
   font-family: 'Bebas Neue', cursive;
   letter-spacing: 2px;
 }
-
+header{
+  margin-bottom: 10px;
+}
 nav {
     display: flex;
     justify-content: space-between;
@@ -131,6 +133,7 @@ nav {
 
 .header p {
     text-align: center;
+    justify-content: center;
     border-width:3px;
     border-radius: 10px;
     border-style:solid;
@@ -138,6 +141,17 @@ nav {
     height: 20vh;
     border-color:var(--color-white);
     margin-bottom: 20px;
+}
+
+
+#reset{
+  margin: 10px;
+  height: 40px;
+  width: 80px;
+  background-color: var(--color-secondary);
+  border-radius: 10px;
+  border: none;
+  color: var(--color-white);
 }
 
 .boards h2{

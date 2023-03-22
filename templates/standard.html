@@ -34,7 +34,9 @@
         <div class="header">
             <h1>Standard Mode</h1>
             <h3>{{ p1 }} vs {{ p2 }} </h3>
-            <p class="instruct">Places down you ships! {{ instructions }}</p>
+            <h3 id="scores">{{ score1 }} - {{ score2 }}</h3>
+            <button style='display: none;' id="reset" onCLick = 'resetGame()'>Reset</button>
+            <p id="instruct"></p>
             
         </div>
   
@@ -361,11 +363,14 @@
         <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
         <script>
           $(document).ready(function() {
-              setInterval(getOceanDisplay, 2000);
-              setInterval(getTargetDisplay, 2000);
-              setInterval(gameplay, 2000);
-              setInterval(updateOcean, 2000);
-              setInterval(updateTurn, 2000);
+              setInterval(getOceanDisplay, 1500);
+              setInterval(getTargetDisplay, 1500);
+              setInterval(gameplay, 1500);
+              setInterval(updateOcean, 1500);
+              setInterval(updateTurn, 1500);
+              setInterval(updateScore, 1500);
+              setInterval(updateInstruct, 1500);
+              setInterval(checkOver, 1500);
           });
         </script>
     </body>

@@ -37,16 +37,23 @@ except:
 try:
     query = '''
     CREATE TABLE rooms (
-id INT AUTO_INCREMENT PRIMARY KEY,
-roomcode VARCHAR(255) UNIQUE NOT NULL,
-numUsers INT,
-userOne VARCHAR(255),
-userTwo VARCHAR(255),
-pOneTarget VARCHAR(1000),
-pTwoTarget VARCHAR(1000),
-pOneOcean VARCHAR(1000),
-pTwoOcean VARCHAR(1000),
-turn INT
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        roomcode VARCHAR(255) UNIQUE NOT NULL,
+        numUsers INT,
+        userOne VARCHAR(255),
+        userTwo VARCHAR(255),
+        pOneTarget VARCHAR(1000),
+        pTwoTarget VARCHAR(1000),
+        pOneOcean VARCHAR(1000),
+        pTwoOcean VARCHAR(1000),
+        turn INT,
+        pOneShot VARCHAR(20),
+        pTwoShot VARCHAR(20),
+        pOneSunk INT,
+        pTwoSunk INT,
+        pOneWin INT,
+        pTwoWin INT,
+        haveWinner Int
 );
 
     '''
@@ -55,7 +62,14 @@ turn INT
 except:
     pass
 
-
+global numShot
+numShot = {
+    'C':0,
+    'B':0,
+    'D':0,
+    'S':0,
+    'P':0
+}
 
 app.secret_key = 'secret_key'
 
@@ -157,8 +171,8 @@ def dropEmpty():
 
 def createNew(room):
     cursor = mydb.cursor()
-    query = "INSERT INTO rooms (roomcode,numUsers, userOne, userTwo) VALUE (%s, %s, %s, %s)"
-    cursor.execute(query,(room, 1,session['username'],None))
+    query = "INSERT INTO rooms (roomcode,numUsers, userOne, userTwo, pOneShot, pTwoShot, pOneSunk, pTwoSunk, pOneWin, pTwoWin,haveWinner) VALUE (%s, %s, %s, %s,%s,%s,%s,%s,%s,%s,%s)"
+    cursor.execute(query,(room, 1,session['username'],None,'0,0,0,0,0','0,0,0,0,0',0,0,0,0,0))
     mydb.commit()
     query = "UPDATE rooms SET turn = %s WHERE roomcode=%s"
     cursor.execute(query,(1,room))
@@ -220,6 +234,7 @@ def chat():
 @app.route('/create', methods=['GET', 'POST'])
 def create():
     session['turn'] = 1
+    session['winner'] = False
     if(request.method=='POST'):
         cursor = mydb.cursor()
         found = False
@@ -725,9 +740,8 @@ def updateOcean():
         }
 
     target_dict = {}
-
-
     target_li = playerTarget
+
     for rowI, row in enumerate(target_li):
         for colI, col in enumerate(row):
             row_str = mapping[rowI]
@@ -744,11 +758,101 @@ def updateTurn():
     print(session['turn'])
     return 'FEOHSOIEFHSOI'
 
+@app.route('/updateInstruct')
+def updateInstruct():
+    out = "Place down your ships!"
+    cursor = mydb.cursor()
+    query = "SELECT haveWinner FROM rooms WHERE roomcode = %s"
+    cursor.execute(query, (session['room'],))
+    session['winner'] = bool(cursor.fetchone()[0])
+    if session['winner']:
+        if session['turn']==2:
+            cursor = mydb.cursor()
+            query = "SELECT userOne FROM rooms WHERE roomcode = %s"
+            cursor.execute(query, (session['room'],))
+            pNum = cursor.fetchone()[0]
+        else:
+            cursor = mydb.cursor()
+            query = "SELECT userTwo FROM rooms WHERE roomcode = %s"
+            cursor.execute(query, (session['room'],))
+            pNum = cursor.fetchone()[0]
+        out = f"GAME OVER! {pNum} wins!"
+    elif allPlaced:
+        out = "Shoot at opponent!"
+    return jsonify(out)
+
+@app.route('/updateScore')
+def updateScore():
+    isP1 = True
+    if session['room']:
+            cursor = mydb.cursor()
+            query = "SELECT * FROM rooms WHERE roomcode = %s"
+            cursor.execute(query, (session['room'],))
+            results = cursor.fetchone()
+            
+            isP1= False if results[4]==session['username'] else True
+    
+    output  ={}
+    cursor = mydb.cursor()
+    query = "SELECT pOneWin FROM rooms WHERE roomcode = %s"
+    cursor.execute(query, (session['room'],))
+    p1score = cursor.fetchone()[0]
+
+    cursor = mydb.cursor()
+    query = "SELECT pTwoWin FROM rooms WHERE roomcode = %s"
+    cursor.execute(query, (session['room'],))
+    p2score = cursor.fetchone()[0]
+
+    if isP1:
+        output['P1'] = p1score
+        output['P2'] = p2score
+    else:
+        output['P1'] = p2score
+        output['P2'] = p1score
+    return jsonify(output)
+
+@app.route('/checkOver')
+def checkOver():
+    cursor = mydb.cursor()
+    query = "SELECT haveWinner FROM rooms WHERE roomcode = %s"
+    cursor.execute(query, (session['room'],))
+    session['winner'] = bool(cursor.fetchone()[0])
+    if session['winner']:
+        return jsonify(True)
+    return jsonify(False)
+
+
+@app.route('/resetGame')
+def resetGame():
+    global board_dict
+    global board_dict2
+    board_dict = {}
+    board_dict2 = {}
+    none_board_str = ','.join(str(None) for row in session['player'].ocean.board for item in row)
+    cursor = mydb.cursor()
+    query = 'UPDATE rooms SET pOneTarget=%s,pTwoTarget=%s, pOneOcean=%s, pTwoOcean=%s, turn=%s, pOneShot=%s, pTwoShot=%s, pOneSunk=%s, pTwoSunk=%s,haveWinner=%s WHERE roomcode = %s'
+    cursor.execute(query, (none_board_str,none_board_str,none_board_str,none_board_str,1,'0,0,0,0,0','0,0,0,0,0',0,0,0,session['room']))
+    mydb.commit()
+    query = 'UPDATE rooms SET pOneTarget = %s WHERE room = %s'
+    cursor.execute(query, (none_board_str,session['room']))
+    mydb.commit()
+    standard()
+    return 'eoaihei'
+
 @app.route('/processShot/<string:userInfo>', methods=['POST'])
 def processShot(userInfo):
+
+    cursor = mydb.cursor()
+    query = "SELECT haveWinner FROM rooms WHERE roomcode = %s"
+    cursor.execute(query, (session['room'],))
+    haveWinner = bool(cursor.fetchone()[0])
+    session['winner'] = haveWinner
+
+
     global winner
     
     winner = False
+    
     
 
     mapping = {
@@ -777,6 +881,18 @@ def processShot(userInfo):
     print(f"PLAYER 1: {isP1}")
     print(f'TURN: {turn}')
 
+    if isP1:
+        cur = mydb.cursor()
+        query  = "SELECT pOneShot FROM rooms WHERE roomcode = %s"
+        cursor.execute(query, (session['room'],))
+        session['beenShot'] = cursor.fetchone()[0]
+        print(session['beenShot'])
+    else:
+        cur = mydb.cursor()
+        query  = "SELECT pTwoShot FROM rooms WHERE roomcode = %s"
+        cursor.execute(query, (session['room'],))
+        session['beenShot'] = cursor.fetchone()[0]
+        print(session['beenShot'])
 
     if isP1 and turn==1:
         go = True
@@ -786,70 +902,176 @@ def processShot(userInfo):
         go=False
     print(allPlaced and go)
 
-    
+# START ---------------------------------------------------------------------------------------------
 
-    if allPlaced and go:
 
-        if turn==1:
-            session['turn'] =2
-        else:
-            session['turn']=1
+            # END ---------------------------------------------------------------------------------
 
-        cursor = mydb.cursor()
-        query = "UPDATE rooms SET turn = %s WHERE roomcode = %s"
-        cursor.execute(query, (session['turn'],session['room']))
-        mydb.commit()
+    if not session['winner']:
+        if allPlaced and go:
 
-        userInfo = json.loads(userInfo)
+            if turn==1:
+                session['turn'] =2
+            else:
+                session['turn']=1
 
-        print('RECEIVED')
-        print(f"ROW: {userInfo['row']}")
-        print(f"COL: {userInfo['col']}")
-    
+            cursor = mydb.cursor()
+            query = "UPDATE rooms SET turn = %s WHERE roomcode = %s"
+            cursor.execute(query, (session['turn'],session['room']))
+            mydb.commit()
+
+            userInfo = json.loads(userInfo)
+
+            print('RECEIVED')
+            print(f"ROW: {userInfo['row']}")
+            print(f"COL: {userInfo['col']}")
         
-
-
-        row = int(userInfo['row'])
-        col = int(userInfo['col'])
-
-
-        if opponentBoard[row-1][col-1] != 'None':
-            session['player'].target.markHit(row-1,col-1)
-            
-            print(f'HIT SHIP AT {row}, {col}')
             
 
-        else:
-            session['player'].target.markMiss(row-1,col-1)
 
-        print(f"IS P1: {isP1}")
-        print(f"OPPONENT BOARD: {opponentBoard}")
-        print(f"TARGET BOARD: {session['player'].target.board}")
+            row = int(userInfo['row'])
+            col = int(userInfo['col'])
 
-        
-        board_str = ','.join(str(item) for row in session['player'].target.board for item in row)
-        if isP1 :
-            if session['room']:
+            global numShot
+            if opponentBoard[row-1][col-1] != 'None':
+                session['player'].target.markHit(row-1,col-1)
+                
+                shipMap = {
+                    'C':'Carrier',
+                    'B':'Battleship',
+                    'D':'Destroyer',
+                    'S':'Submarine',
+                    'P': 'Patrol Boat'
+                }
+
+                shipLen = {
+                    'C':5,
+                    'B':4,
+                    'D':3,
+                    'S':3,
+                    'P': 2
+                }
+
+                shipsInd = {
+                    'C':0,
+                    'B':1,
+                    'D':2,
+                    'S':3,
+                    'P': 4
+                }
+                sunk = False
+                ind = shipsInd[opponentBoard[row-1][col-1]]
+                length = shipLen[opponentBoard[row-1][col-1]]
+                shipType = shipMap[opponentBoard[row-1][col-1]]
+
+                beenShotList = session['beenShot'].split(',')
+                beenShotList[ind] = str(int(beenShotList[ind])+1)
+                beenShotStr = ",".join(beenShotList)
+                print(f"BEEN SHOT STR: {beenShotStr}")
+
+                print(f'NUM TIMES HIT {beenShotList[ind]}')
+                if int(beenShotList[ind]) == length:
+                    sunk = True
+
+                if isP1:
                     cursor = mydb.cursor()
-                    query = "UPDATE rooms SET pOneTarget = %s WHERE roomcode=%s"
-                    cursor.execute(query, (board_str,session['room']))
+                    query = "UPDATE rooms SET pOneShot = %s WHERE roomcode = %s"
+                    cursor.execute(query, (beenShotStr,session['room']))
+                    mydb.commit()
+
+                else:
+                    cursor = mydb.cursor()
+                    query = "UPDATE rooms SET pTwoShot = %s WHERE roomcode = %s"
+                    cursor.execute(query, (beenShotStr,session['room']))
+                    mydb.commit()
+
+
+                if sunk:
+                    if isP1:
+                        cursor = mydb.cursor()
+                        query = "UPDATE rooms SET pOneSunk = pOneSunk+1 WHERE roomcode = %s"
+                        cursor.execute(query, (session['room'],))
+                        mydb.commit()
+
+                        cur = mydb.cursor()
+                        query  = "SELECT pOneSunk FROM rooms WHERE roomcode = %s"
+                        cur.execute(query, (session['room'],))
+                        numSunk = cur.fetchone()[0]
+                        print(f"NUMBER SUNK: {numSunk}")
+
+                        if numSunk ==5:
+                            winner = 1
+                            session['winner'] = True
+                            print('P1 WINS')
+                            print(f"{session['username']} WINS")
+                            cursor = mydb.cursor()
+                            query = "UPDATE rooms SET pOneWin = pOneWin+1 WHERE roomcode = %s"
+                            cursor.execute(query, (session['room'],))
+                            mydb.commit()
+
+                            cursor = mydb.cursor()
+                            query = "UPDATE rooms SET haveWinner = 1 WHERE roomcode = %s"
+                            cursor.execute(query, (session['room'],))
+                            mydb.commit()
+
+                    else:
+                        cursor = mydb.cursor()
+                        query = "UPDATE rooms SET pTwoSunk = pTwoSunk+1 WHERE roomcode = %s"
+                        cursor.execute(query, (session['room'],))
+                        mydb.commit()
+
+                        cur = mydb.cursor()
+                        query  = "SELECT pTwoSunk FROM rooms WHERE roomcode = %s"
+                        cur.execute(query, (session['room'],))
+                        numSunk = cur.fetchone()[0]
+                        print(f"NUMBER SUNK: {numSunk}")
+                        if numSunk ==5:
+                            winner = 2
+                            session['winner'] = True
+                            print('P2 WINS')
+                            print(f"{session['username']} WINS")
+                            cursor = mydb.cursor()
+                            query = "UPDATE rooms SET pTwoWin = pTwoWin+1 WHERE roomcode = %s"
+                            cursor.execute(query, (session['room'],))
+                            mydb.commit()
+
+                            cursor = mydb.cursor()
+                            query = "UPDATE rooms SET haveWinner = 1 WHERE roomcode = %s"
+                            cursor.execute(query, (session['room'],))
+                            mydb.commit()
+
+                    
+                
+                print(f'HIT {shipType} AT {row}, {col}')
+                
+
+            else:
+                session['player'].target.markMiss(row-1,col-1)
+
+            
+            board_str = ','.join(str(item) for row in session['player'].target.board for item in row)
+            if isP1 :
+                if session['room']:
+                        cursor = mydb.cursor()
+                        query = "UPDATE rooms SET pOneTarget = %s WHERE roomcode=%s"
+                        cursor.execute(query, (board_str,session['room']))
+                        mydb.commit()
+                        for rowI,row in enumerate(session['player'].ocean.board):
+                            for colI, col in enumerate(row):
+                                ind = str(mapping[rowI])+str(colI+1)
+                                board_dict[ind] = col
+            elif not isP1: 
+                if session['room']:
+
+                    print(session['room'])
+                    cursor = mydb.cursor()
+                    query = "UPDATE rooms SET pTwoTarget = %s WHERE roomcode=%s"
+                    cursor.execute(query, (board_str,session['room'])) 
                     mydb.commit()
                     for rowI,row in enumerate(session['player'].ocean.board):
-                        for colI, col in enumerate(row):
-                            ind = str(mapping[rowI])+str(colI+1)
-                            board_dict[ind] = col
-        elif not isP1: 
-            if session['room']:
-
-                print(session['room'])
-                cursor = mydb.cursor()
-                query = "UPDATE rooms SET pTwoTarget = %s WHERE roomcode=%s"
-                cursor.execute(query, (board_str,session['room'])) 
-                mydb.commit()
-                for rowI,row in enumerate(session['player'].ocean.board):
-                        for colI, col in enumerate(row):
-                            ind = str(mapping[rowI])+str(colI+1)
-                            board_dict2[ind] = col
+                            for colI, col in enumerate(row):
+                                ind = str(mapping[rowI])+str(colI+1)
+                                board_dict2[ind] = col
     return 'YES'
 
 
@@ -874,19 +1096,7 @@ def standard():
                 isP1= False if results[4]==session['username'] else True
 
     
-    boardSize = {'a1V': 'table-cell', 'b1V': 'table-cell', 'c1V': 'table-cell', 'd1V': 'table-cell', 'e1V': 'table-cell', 'f1V': 'table-cell', 'g1V': 'table-cell', 'h1V': 'table-cell', 'i1V': 'table-cell', 'j1V': 'table-cell',
-                'a2V': 'table-cell', 'b2V': 'table-cell', 'c2V': 'table-cell', 'd2V': 'table-cell', 'e2V': 'table-cell', 'f2V': 'table-cell', 'g2V': 'table-cell', 'h2V': 'table-cell', 'i2V': 'table-cell', 'j2V': 'table-cell',
-                'a3V': 'table-cell', 'b3V': 'table-cell', 'c3V': 'table-cell', 'd3V': 'table-cell', 'e3V': 'table-cell', 'f3V': 'table-cell', 'g3V': 'table-cell', 'h3V': 'table-cell', 'i3V': 'table-cell', 'j3V': 'table-cell',
-                'a4V': 'table-cell', 'b4V': 'table-cell', 'c4V': 'table-cell', 'd4V': 'table-cell', 'e4V': 'table-cell', 'f4V': 'table-cell', 'g4V': 'table-cell', 'h4V': 'table-cell', 'i4V': 'table-cell', 'j4V': 'table-cell',
-                'a5V': 'table-cell', 'b5V': 'table-cell', 'c5V': 'table-cell', 'd5V': 'table-cell', 'e5V': 'table-cell', 'f5V': 'table-cell', 'g5V': 'table-cell', 'h5V': 'table-cell', 'i5V': 'table-cell', 'j5V': 'table-cell',
-                'a6V': 'table-cell', 'b6V': 'table-cell', 'c6V': 'table-cell', 'd6V': 'table-cell', 'e6V': 'table-cell', 'f6V': 'table-cell', 'g6V': 'table-cell', 'h6V': 'table-cell', 'i6V': 'table-cell', 'j6V': 'table-cell',
-                'a7V': 'table-cell', 'b7V': 'table-cell', 'c7V': 'table-cell', 'd7V': 'table-cell', 'e7V': 'table-cell', 'f7V': 'table-cell', 'g7V': 'table-cell', 'h7V': 'table-cell', 'i7V': 'table-cell', 'j7V': 'table-cell',
-                'a8V': 'table-cell', 'b8V': 'table-cell', 'c8V': 'table-cell', 'd8V': 'table-cell', 'e8V': 'table-cell', 'f8V': 'table-cell', 'g8V': 'table-cell', 'h8V': 'table-cell', 'i8V': 'table-cell', 'j8V': 'table-cell',
-                'a9V': 'table-cell', 'b9V': 'table-cell', 'c9V': 'table-cell', 'd9V': 'table-cell', 'e9V': 'table-cell', 'f9V': 'table-cell', 'g9V': 'table-cell', 'h9V': 'table-cell', 'i9V': 'table-cell', 'j9V': 'table-cell',
-                'a10V': 'table-cell', 'b10V': 'table-cell', 'c10V': 'table-cell', 'd10V': 'table-cell', 'e10V': 'table-cell', 'f10V': 'table-cell', 'g10V': 'table-cell', 'h10V': 'table-cell', 'i10V': 'table-cell', 'j10V': 'table-cell',
-                'VA': 'table-row', 'VB': 'table-row', 'VC': 'table-row', 'VD': 'table-row', 'VE': 'table-row', 'VF': 'table-row', 'VG': 'table-row', 'VH': 'table-row', 'VI': 'table-row', 'VJ': 'table-row',
-                'V1': 'table-cell','V2': 'table-cell','V3': 'table-cell','V4': 'table-cell','V5': 'table-cell','V6': 'table-cell','V7': 'table-cell','V8': 'table-cell','V9': 'table-cell','V10': 'table-cell'}
-    
+
     p2 = 'NONE'
 
     if session['room']:
@@ -918,7 +1128,7 @@ def standard():
         p2 = results[4] if results[4] is not None else 'NONE'
         if results[4]==session['username']:
             p2 = results[3]
-    return render_template("standard.html",**boardSize, vis3 = 'none', sizeSubmitVis = 'none', p1=session['username'], p2 = p2)
+    return render_template("standard.html", vis3 = 'none', sizeSubmitVis = 'none', p1=session['username'], p2 = p2)
 
 
 @app.route('/rapid.html', methods=['GET', 'POST'])

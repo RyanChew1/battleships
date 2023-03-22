@@ -135,6 +135,7 @@ function setHighlight(event) {
     }
   }
 }
+
 })})
 if (placedSuccess){
   numPlaced+=1;
@@ -181,12 +182,12 @@ const shipType = [
 index = 0;
 highlightLength = 5;
 runningTotal = 0;
-console.log(highlightLength);
+
 
 
 
 function handleClick(event) {
-  
+  console.log(ships.length)
   if (ships.length < 5) {
 
     const cell = event.target.closest("td");
@@ -264,6 +265,7 @@ function getOceanDisplay(){
 
         element = document.getElementById(key);
         if (board[key] != null){
+          
           element.innerHTML = board[key];
         }
         
@@ -349,7 +351,6 @@ function shootAt(event){
       url: '/displayTarget',
       type:'GET',
       success:function(board) {
-        console.log(board)
         
         for (const key in board) {
           let key2 = key.slice(0,-1);
@@ -360,6 +361,8 @@ function shootAt(event){
           }
           else if (board[key] != null){
             element.innerHTML = board[key];
+            if (board[key]=='None'){
+              element.innerHTML = 'X';}
             element.style.color = 'red';
             element.style.backgroundColor = 'rgb(120,100,100)';
           }
@@ -398,6 +401,77 @@ function shootAt(event){
     });
   }
 
+  function updateScore(){
+    $.ajax({
+      url: '/updateScore',
+      type:'GET',
+      success: function(scores){
+        element = document.getElementById('scores')
+        element.innerHTML = `${scores['P1']} - ${scores['P2']}`
+      }
+    });
+  }
+
+    function updateTurn(){
+    $.ajax({
+      url: '/updateTurn',
+      type:'GET'
+    });
+  }
+
+  function updateInstruct(){
+    $.ajax({
+      url: '/updateInstruct',
+      type:'GET',
+      success: function(string){
+        element = document.getElementById('instruct')
+        element.innerHTML = string
+      }
+    });
+  }
+  function checkOver(){
+    $.ajax({
+      url: '/checkOver',
+      type:'GET',
+      success: function(isOver){
+        let element = document.getElementById('reset')
+        if (isOver){
+          element.style.display = 'block'
+        }
+      }
+    });
+  }
+
+  function resetGame(){
+    
+    elements = document.querySelectorAll('td')
+    for (let i = 0; i < elements.length; i++) {
+      elements[i].style.backgroundColor = 'black'; 
+      let shipNames = ['C','B','D','S','P']
+      if (shipNames.includes(elements[i].innerHTML)){
+        console.log('RESETTED')
+        elements[i].innerHTML = ''
+      }
+      
+    }
+    
+    
+    index = 0;
+    highlightLength = 5;
+    runningTotal = 0;
+    isHorizontal = true; 
+    startRow = 0; 
+    startCol = 0; 
+    highlightLength = 5; 
+    filled = []
+    ships=[]
+    numPlaced = 0
+    $.ajax({
+      url: '/resetGame',
+      type:'GET'
+    });
+    location.reload()
+  }
 
 // Attach the event listeners to the table
 const table = document.querySelector(".ocean");
