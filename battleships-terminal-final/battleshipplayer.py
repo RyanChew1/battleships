@@ -69,8 +69,9 @@ class BattleshipPlayer:
         hit = False
         sunk = False
         hitShip = None
+        
         if self.ocean.getPiece(int(row),int(col)-1) is not None:
-                ship = self.ocean.getPiece(int(row), int(col)-1)
+                ship = self.ocean.getPiece(int(row), int(col))
                 for i in self.ocean.ships:
                             loc = i.getLocation()
                             h = i.isHorizontal()
@@ -89,7 +90,7 @@ class BattleshipPlayer:
                     
         print('')
         if hitShip:
-            if hitShip.isHitAt(int(row),int(col)-1):
+            if hitShip.isHitAt(int(row),int(col)):
                 # Already Shot
                 return (False, False, "shot")
             hitShip.markHitAt(int(row),int(col))
