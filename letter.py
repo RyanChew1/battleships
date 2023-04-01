@@ -1,10 +1,3 @@
-'''
-A class to create colored letters.
-
-Letter('a', 'red') creates a red 'a'. So you can print(Letter('a', 'red'))
-
-Only 'red', 'green' or 'yellow' colors are currently supported
-'''
 class Letter:
     def __init__(self, ch, color):
         self.ch = ch
