@@ -4,9 +4,7 @@ import subprocess
 from ship import Ship
 
 class Display:
-    
-    #### DO NOT MODIFY LINES BELOW ####
-    # move to 1, 1
+
     def home(self) -> None:
         print(u'\u001b[H', end='')
 
@@ -52,7 +50,7 @@ class Display:
     def newLine(self):
         print()
 
-    #### MODIFY BELOW ####
+
     # display the Ocean board of the player
     def displayOcean(self, player: BattleshipPlayer) -> None:
         print("   ", end="")
