@@ -1,25 +1,4 @@
-#=============================================================================
-# Models one of the plastic ships in the Battleship game
-# The plastic ships have 2-5 holes in them depending on the size of the ship.
-# When a hit is registered, a red peg is placed in the plastic hole.
-# 
-# The class has the following attributes:
-# 
-#    type (str) - like "Cruiser"
-#    size (int) - 3
-#    status (list) - [0, 0, 0] to model the plastic holes that get filled with red pegs
-#    loc (int, int) - the row, col location of the ship - ex. (3, 5)
-#    horizontal (bool) - boolean if horizontal in orientation - ex. True
-# 
-#    In the above example, the ship is a "Cruiser" and occupies (3, 5), (3, 6), (3, 7)
-#    If it were vertical instead, the ship would occupy (3, 5), (4, 5) and (5, 5)
-#
-# Methods
-#    markHitAt(r, c) - modify the status of the ship to a 'hit' at (r, c) - "fill in the
-#                      plastic hole with a red peg"
-#    isHitAt(r, c) - is the a "red peg" at (r, c)?
-#    isSunk() - the entire ship is sunk - all the status[] are 'hit's (i.e. filled with "red pegs")
-#=============================================================================
+
 class Ship:
     def __init__(self, type: str, size: int):
         '''
